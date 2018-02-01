@@ -1,0 +1,1 @@
+allow ussrd self:netlink_socket { bind create };

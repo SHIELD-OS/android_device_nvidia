@@ -1,0 +1,1 @@
+allow bluetooth sysfs_bus_usb:file write;

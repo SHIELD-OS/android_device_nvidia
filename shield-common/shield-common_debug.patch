@@ -1,0 +1,26 @@
+diff --git a/shield.mk b/shield.mk
+index 2d3ce09..7c8a0a3 100644
+--- a/shield.mk
++++ b/shield.mk
+@@ -182,3 +182,8 @@ NV_ANDROID_FRAMEWORK_ENHANCEMENTS := TRUE
+ 
+ # Only set if framework modifications for blakepairing are available.
+ NV_ANDROID_FRAMEWORK_ENHANCEMENTS_BLAKE := FALSE
++
++PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
++    ro.adb.secure=0 \
++    ro.secure=0 \
++    ro.debuggable=1
+diff --git a/system_prop.mk b/system_prop.mk
+index 383cd7d..fe905b8 100644
+--- a/system_prop.mk
++++ b/system_prop.mk
+@@ -47,7 +47,7 @@ endif
+ 
+ # USB
+ PRODUCT_PROPERTY_OVERRIDES += \
+-    persist.sys.usb.config=mtp
++    persist.sys.usb.config=mtp,adb
+ 
+ # WiFi
+ PRODUCT_PROPERTY_OVERRIDES += \

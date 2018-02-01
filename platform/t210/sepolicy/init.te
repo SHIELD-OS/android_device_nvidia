@@ -1,0 +1,2 @@
+allow init proc_wmem_max_writable:file write;
+allow init userdata_block_device:blk_file write;
