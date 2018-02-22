@@ -14,7 +14,7 @@ on early-init
     mount debugfs debugfs /sys/kernel/debug mode=0755
 
 on init
-    export LD_SHIM_LIBS "/system/lib/libicuuc.so|libicu_shim.so:/system/vendor/bin/glgps_nvidiaTegra2android:libsensor.so"
+    export LD_PRELOAD "libshim_zw.so"
 
     mkdir /dev/camera 0755 media camera
     mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw

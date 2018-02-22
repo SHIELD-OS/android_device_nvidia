@@ -18,7 +18,7 @@ on fs
     setprop ro.gps.gpio 66
 
 on post-fs-data
-    #start start-gps
+    start start-gps
 
 on firmware_mounts_complete
     symlink /system/etc/nvram_loki_e_4354.txt /data/misc/wifi/firmware/nvram.txt

@@ -14,9 +14,6 @@
 # limitations under the License.
 #
 
-REFERENCE_DEVICE ?= $(TARGET_DEVICE)
-TARGET_USES_PYTHON_IN_VENDOR := true
-
 # SELinux
 BOARD_SEPOLICY_DIRS += device/nvidia/shield-common/sepolicy/common \
                        device/nvidia/shield-common/sepolicy/lineage-common
@@ -28,7 +25,8 @@ endif
 ifneq ($(filter $(TARGET_TEGRA_TOUCH),nvtouch),)
 	BOARD_SEPOLICY_DIRS += device/nvidia/shield-common/sepolicy/maxim
 else ifneq ($(filter $(TARGET_TEGRA_TOUCH),raydium),)
-	BOARD_SEPOLICY_DIRS += device/nvidia/shield-common/sepolicy/raydium
+	BOARD_SEPOLICY_DIRS += device/nvidia/shield-common/sepolicy/raydium \
+	                       device/nvidia/shield-common/sepolicy/lineage-raydium
 else ifneq ($(filter $(TARGET_TEGRA_TOUCH),sharp),)
 	BOARD_SEPOLICY_DIRS += device/nvidia/shield-common/sepolicy/sharp
 endif
@@ -38,7 +36,10 @@ TARGET_POWERHAL_VARIANT := tegra
 TARGET_THERMALHAL_VARIANT := tegra
 
 # Release tools for bootloader assertion
-# TARGET_RELEASETOOLS_EXTENSIONS := device/nvidia/shield-common/releasetools
+TARGET_RELEASETOOLS_EXTENSIONS := device/nvidia/shield-common/releasetools
+
+# Forced shims
+TARGET_LD_SHIM_LIBS := /system/vendor/bin/glgps_nvidiaTegra2android|libsensor.so:/system/lib/libcutils.so|libcutils_shim.so:/system/lib64/libcutils.so|libcutils_shim.so:/system/lib/libicuuc.so|libicu_shim.so
 
 # Use unified vendor
 TARGET_TEGRA_VARIANT := shield

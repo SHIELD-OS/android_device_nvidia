@@ -52,5 +52,5 @@ $(call inherit-product-if-exists, 3rdparty/applications/prebuilt/common/$(_produ
 
 ## eks2 data blob
 PRODUCT_COPY_FILES += \
-    $(call add-to-product-copy-files-if-exists, vendor/nvidia/tegra/ote/nveks2/data/eks2_foster.dat:system/vendor/app/eks2/eks2.dat)
+    $(call add-to-product-copy-files-if-exists, device/nvidia/platform/t210/eks2/eks2_foster.dat:system/vendor/app/eks2/eks2.dat)
 

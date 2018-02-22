@@ -51,7 +51,7 @@ endif
 
 # USB
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp,adb
+    persist.sys.usb.config=mtp
 
 # WiFi
 PRODUCT_PROPERTY_OVERRIDES += \

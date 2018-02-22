@@ -15,18 +15,18 @@
 #
 
 # Overlay
-#ifneq ($(TARGET_TEGRA_DISABLE_OVERLAY),true)
-#    DEVICE_PACKAGE_OVERLAYS += \
-#         device/nvidia/shield-common/overlay/common
-#
-#    ifeq ($(PRODUCT_IS_ATV),true)
-#        DEVICE_PACKAGE_OVERLAYS += \
-#            device/nvidia/shield-common/overlay/tv
-#    else
-#        DEVICE_PACKAGE_OVERLAYS += \
-#            device/nvidia/shield-common/overlay/tablet-do
-#    endif
-#endif
+ifneq ($(TARGET_TEGRA_DISABLE_OVERLAY),true)
+    DEVICE_PACKAGE_OVERLAYS += \
+         device/nvidia/shield-common/overlay/common
+
+    ifeq ($(PRODUCT_IS_ATV),true)
+        DEVICE_PACKAGE_OVERLAYS += \
+            device/nvidia/shield-common/overlay/tv
+    else
+        DEVICE_PACKAGE_OVERLAYS += \
+            device/nvidia/shield-common/overlay/tablet-do
+    endif
+endif
 
 # System properties
 -include $(LOCAL_PATH)/system_prop.mk
@@ -151,9 +151,13 @@ PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-impl \
     android.hardware.graphics.mapper@2.0-impl
 
+# Graphics shim
+PRODUCT_PACKAGES += libs \
+                    libshim_zw
+
 # Health HAL
-#PRODUCT_PACKAGES += \
-#    android.hardware.health@1.0-impl
+PRODUCT_PACKAGES += \
+    android.hardware.health@1.0-impl
 
 # idc
 PRODUCT_COPY_FILES += \
@@ -189,7 +193,7 @@ PRODUCT_COPY_FILES += \
 
 # Leanback apps
 ifeq ($(PRODUCT_IS_ATV),true)
-    $(call inherit-product, vendor/google/atv/atv-common.mk)
+    $(call inherit-product-if-exists, vendor/google/atv/atv-common.mk)
 endif
 
 # Keymaster
@@ -214,6 +218,9 @@ PRODUCT_PACKAGES += \
 # Renderscript
 PRODUCT_PACKAGES += \
     android.hardware.renderscript@1.0-impl
+
+# RIL shim
+PRODUCT_PACKAGES += libcutils_shim
 
 # Vendor seccomp policy files for media components:
 PRODUCT_COPY_FILES += \
@@ -266,8 +273,3 @@ NV_ANDROID_FRAMEWORK_ENHANCEMENTS := TRUE
 
 # Only set if framework modifications for blakepairing are available.
 NV_ANDROID_FRAMEWORK_ENHANCEMENTS_BLAKE := FALSE
-
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    ro.adb.secure=0 \
-    ro.secure=0 \
-    ro.debuggable=1

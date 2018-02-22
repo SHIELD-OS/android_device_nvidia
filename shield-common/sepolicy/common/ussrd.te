@@ -78,4 +78,4 @@ allow ussrd self:capability sys_nice;
 
 # netlink access
 allow ussrd self:capability net_admin;
-#allow ussrd self:netlink_socket create_stream_socket_perms;
+allow ussrd self:netlink_socket { create_socket_perms_no_ioctl listen accept };

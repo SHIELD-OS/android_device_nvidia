@@ -139,7 +139,7 @@ set_prop(system_app, bluetooth_prop)
 
 # IDS reads wifi files
 r_dir_file(system_app, wifi_data_file)
-#allow system_app self:netlink_socket create_socket_perms;
+allow system_app self:netlink_socket create_socket_perms_no_ioctl;
 
 # allow system app to access suspend_time
 allow system_app debugfs_suspend_time_stats:file r_file_perms;

@@ -17,6 +17,7 @@
 PRODUCT_CHARACTERISTICS := tv
 TARGET_TEGRA_VERSION := t210
 TARGET_TEGRA_TOUCH := raydium
+TARGET_TEGRA_MODEM := icera
 
 $(call inherit-product, device/nvidia/shield-common/shield.mk)
 
@@ -25,25 +26,28 @@ PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
 
-# Boot Animation
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/bootanimation.zip:system/media/bootanimation.zip
-
+# Tablet mode Support
+ifeq ($(ALTERNATE_BUILD),true)
+$(call inherit-product, device/nvidia/platform/t210/device_tablet.mk)
+else
 $(call inherit-product, device/nvidia/platform/t210/device_atv.mk)
+endif
 
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-dalvik-heap.mk)
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-hwui-memory.mk)
 
-
+ifneq ("$(wildcard vendor/nvidia/shield/foster.mk)","")
 $(call inherit-product, vendor/nvidia/shield/foster.mk)
+else ifneq ("$(wildcard vendor/nvidia/foster/foster-vendor.mk)","")
+$(call inherit-product, vendor/nvidia/foster/foster-vendor.mk)
+else
+$(error "No proprietary vendor found.")
+endif
+
 $(call inherit-product, vendor/google/widevine/widevine.mk)
 $(call inherit-product, vendor/google/atv/atv-common.mk)
 
 PRODUCT_SYSTEM_PROPERTY_BLACKLIST := ro.product.name
-
-# Overlay
-DEVICE_PACKAGE_OVERLAYS += \
-    device/nvidia/platform/t210/overlay
 
 PRODUCT_PROPERTY_OVERRIDES += \
         ro.nrdp.modelgroup=SHIELDANDROIDTV
@@ -53,16 +57,25 @@ $(call inherit-product-if-exists, 3rdparty/google/gms-apps/tv64/gms.mk)
 PRODUCT_PROPERTY_OVERRIDES += \
         ro.com.google.clientidbase=android-nvidia
 
+
+PRODUCT_SYSTEM_PROPERTY_BLACKLIST := ro.product.name
+
+# Overlay
+DEVICE_PACKAGE_OVERLAYS += \
+    device/nvidia/platform/t210/overlay
+
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.foster \
     fstab.darcy \
     fstab.foster_e \
     fstab.foster_e_hdd \
+    fstab.loki_e_lte \
     fstab.loki_e_wifi \
     init.darcy.rc \
     init.foster_e.rc \
     init.foster_e_hdd.rc \
+    init.loki_e_lte.rc \
     init.loki_e_wifi.rc \
     init.foster_e_common.rc \
     init.loki_e_common.rc \
@@ -72,16 +85,19 @@ PRODUCT_PACKAGES += \
     init.recovery.foster_e.rc \
     init.recovery.foster_e_hdd.rc \
     init.recovery.jetson_cv.rc \
+    init.recovery.loki_e_lte.rc \
     init.recovery.loki_e_wifi.rc \
     power.darcy.rc \
     power.foster_e.rc \
     power.foster_e_hdd.rc \
     power.jetson_cv.rc \
+    power.loki_e_lte.rc \
     power.loki_e_wifi.rc \
     ueventd.darcy.rc \
     ueventd.foster_e.rc \
     ueventd.foster_e_hdd.rc \
     ueventd.jetson_cv.rc \
+    ueventd.loki_e_lte.rc \
     ueventd.loki_e_wifi.rc
 
 # Permissions
@@ -156,8 +172,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/manifest.xml:system/vendor/manifest.xml
 
-# TV Specific Apps
-PRODUCT_PACKAGES += \
-    TvProvider \
-    TvSettings \
-    libstagefrighthw
+# Variant blobs script
+PRODUCT_COPY_FILES += \
+     $(LOCAL_PATH)/releasetools/variant_blobs.sh:install/bin/variant_blobs.sh
+
+# Radio Interface
+PRODUCT_PACKAGES += rild

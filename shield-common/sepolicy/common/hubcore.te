@@ -26,7 +26,7 @@ allow hubcore hubcore_data_file:dir create_dir_perms;
 allow hubcore hubcore_data_file:file create_file_perms;
 allow hubcore self:capability { net_raw net_admin };
 allow hubcore proc_net:file rw_file_perms;
-#allow hubcore self:packet_socket create_socket_perms;
+allow hubcore self:packet_socket create_socket_perms_no_ioctl;
 
 # Allow access to service_manager
 allow hubcore hubcore:service_manager { add find };

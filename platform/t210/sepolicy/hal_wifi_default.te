@@ -1,2 +1,0 @@
-allow hal_wifi_default factory_file:file { open read };
-allow hal_wifi_default sysfs_wifi:file write;
